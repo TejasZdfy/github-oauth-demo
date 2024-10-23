@@ -1,0 +1,46 @@
+<div class="github-container">
+  <mat-accordion>
+
+    <mat-expansion-panel (opened)="true" (closed)="false">
+      <mat-expansion-panel-header>
+  
+        <div class="main-container">
+          <div class="left-section">
+            <div>
+              <mat-panel-title>
+                <img src="../../../assets/git-image.png" alt="" height="32px">
+              </mat-panel-title>
+            </div>
+            <div style="height: 24px;" *ngIf="isConnected">
+              <mat-icon style="color: rgb(5, 173, 5);">check_circle</mat-icon>
+            </div>
+            <div class="history-icon" *ngIf="isConnected">
+              <mat-icon>history</mat-icon>
+            </div>
+          </div>
+          <div class="right-section" *ngIf="isConnected">
+            <div>
+              <p style="margin-bottom: 0px;">Admin: {{ userData.username }} <span style="margin-left: 10px;">Last Synced {{ userData.dateConnected | date: 'medium' }}</span></p>
+            </div>
+            <div style="text-align: end;">
+              Sync type: full
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+      <div  *ngIf="!isConnected" class="bottom-section bottom-center-section" >
+        <div>
+          <button class="main-btn" mat-raised-button (click)="connectToGitHub()">Connect</button>
+        </div>
+        <div>
+          <h2 class="text-color">Connect Sredio to Github</h2>
+        </div>
+      </div>
+      <div  *ngIf="isConnected" class="bottom-section bottom-right-section" >
+        <button class="main-btn" mat-flat-button (click)="removeIntegration()">
+          Remove
+         <mat-icon style="margin-left: 5px;margin-right: 0px;">account_circle</mat-icon></button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

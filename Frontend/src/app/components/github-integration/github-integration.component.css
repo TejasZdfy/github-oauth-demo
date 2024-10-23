@@ -1,0 +1,51 @@
+.github-container ::ng-deep .mat-content {
+  width: 100%;
+  display: block;
+}
+.main-container {
+  display: flex;
+  justify-content: space-between;
+}
+.left-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.right-section {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-right: 20px;
+  color: grey;
+}
+.github-container ::ng-deep .main-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 2px 10px;
+  background-color: #3a3c99;
+  flex-direction: row-reverse;
+  border-radius: 4px;
+}
+.text-color {
+  color: #3a3c99;
+}
+.bottom-section {
+  margin-top: 16px;
+}
+.bottom-center-section {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.bottom-right-section {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.history-icon {
+  margin-left: 10px;
+  height: 24px;
+}
