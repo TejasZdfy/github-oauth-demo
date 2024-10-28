@@ -9,21 +9,32 @@ export class OAuthService {
 
   api_base_url = "http://localhost:3000/auth"
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   connectToGithub(): void {
     window.location.href = `${this.api_base_url}/github`;
   }
 
-  checkGithubUserStatus(id:any): Observable<{ isConnected: boolean }> {
+  checkGithubUserStatus(id: any): Observable<{ isConnected: boolean }> {
     return this.http.get<{ isConnected: boolean }>(`${this.api_base_url}/status/${id}`);
   }
 
-  getGithubUserData(id:any): Observable<any> {
+  getGithubUserData(id: any): Observable<any> {
     return this.http.get<any>(`${this.api_base_url}/get-user-data/${id}`);
   }
 
-  removeGithubUser(id:any): Observable<any> {
+  removeGithubUser(id: any): Observable<any> {
     return this.http.delete(`${this.api_base_url}/remove/${id}`);
   }
+
+  getGithubRepos(userId: any): Observable<any> {
+    return this.http.get<any>(`${this.api_base_url}/get-all-repos/${userId}`);
+  }
+
+  getUserWiseRepoData(data: any, userId: any): Observable<any> {
+    const body = { data, userId };
+    return this.http.post<any>(`${this.api_base_url}/get-user-wise-repo-data`, body);
+  }
+
+
 }

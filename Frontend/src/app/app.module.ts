@@ -9,11 +9,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { GitProjectsComponent } from './components/git-projects/git-projects.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GithubIntegrationComponent
+    GithubIntegrationComponent,
+    GitProjectsComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    AgGridModule,
+    NgHttpLoaderModule.forRoot(),
 
   ],
   providers: [],

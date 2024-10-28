@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { OAuthService } from 'src/app/services/oauth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/localstorage.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-github-integration',
@@ -17,6 +18,7 @@ export class GithubIntegrationComponent {
   constructor(private oauthService: OAuthService,
     private localStorageService: LocalStorageService,
     private activatedRoute: ActivatedRoute,
+    private sharedDataService: SharedDataService,
     private router: Router,
   ) { }
 
@@ -51,11 +53,13 @@ export class GithubIntegrationComponent {
   checkstatus(id: any) {
     this.oauthService.checkGithubUserStatus(id).subscribe(res => {
       this.isConnected = res.isConnected;
+      this.sharedDataService.isConnected = this.isConnected;
     });
   }
   getuserData(id: any) {
     this.oauthService.getGithubUserData(id).subscribe(res => {
       this.userData = res.data;
+      this.sharedDataService.userdata = this.userData;
     });
   }
 

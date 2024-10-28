@@ -3,7 +3,7 @@
 
     <mat-expansion-panel (opened)="true" (closed)="false">
       <mat-expansion-panel-header>
-  
+
         <div class="main-container">
           <div class="left-section">
             <div>
@@ -20,7 +20,8 @@
           </div>
           <div class="right-section" *ngIf="isConnected">
             <div>
-              <p style="margin-bottom: 0px;">Admin: {{ userData.username }} <span style="margin-left: 10px;">Last Synced {{ userData.dateConnected | date: 'medium' }}</span></p>
+              <p style="margin-bottom: 0px;">Admin: {{ userData?.username }} <span style="margin-left: 10px;">Last
+                  Synced {{ userData?.dateConnected | date: 'medium' }}</span></p>
             </div>
             <div style="text-align: end;">
               Sync type: full
@@ -28,7 +29,7 @@
           </div>
         </div>
       </mat-expansion-panel-header>
-      <div  *ngIf="!isConnected" class="bottom-section bottom-center-section" >
+      <div *ngIf="!isConnected" class="bottom-section bottom-center-section">
         <div>
           <button class="main-btn" mat-raised-button (click)="connectToGitHub()">Connect</button>
         </div>
@@ -36,11 +37,12 @@
           <h2 class="text-color">Connect Sredio to Github</h2>
         </div>
       </div>
-      <div  *ngIf="isConnected" class="bottom-section bottom-right-section" >
+      <div *ngIf="isConnected" class="bottom-section bottom-right-section">
         <button class="main-btn" mat-flat-button (click)="removeIntegration()">
           Remove
-         <mat-icon style="margin-left: 5px;margin-right: 0px;">account_circle</mat-icon></button>
+          <mat-icon style="margin-left: 5px;margin-right: 0px;">account_circle</mat-icon></button>
       </div>
+      <div *ngIf="userData" style="margin-top: 20px;"><app-git-projects></app-git-projects></div>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

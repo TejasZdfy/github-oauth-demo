@@ -1,5 +1,11 @@
 import {
+	getAllRepos,
 	getGithubOAuthUrl,
+	getOrganizationRepos,
+	getUserCommit,
+	getUserIssueCounts,
+	getUserOrganizations,
+	getUserPullRequests,
 	handleOAuthCallback,
 } from "../helpers/githubOAuth.js";
 import Integration from "../models/Integration.js";
@@ -40,7 +46,6 @@ export const removeIntegration = async (req, res) => {
 	try {
 		const { userId } = req.params;
 		const integration = await Integration.findOne({ userId });
-		console.log(integration, "integration");
 		if (!integration) {
 			return res
 				.status(404)
@@ -121,5 +126,119 @@ export const checkIntegrationStatus = async (req, res) => {
 			isConnected: false,
 			error: "Failed to check integration status",
 		});
+	}
+};
+
+export const getUserAllOrganizations = async (req, res) => {
+	try {
+		const { userId } = req.params;
+		if (!userId) {
+			return res.status(422).json({
+				success: false,
+				message: "Invalid/Missing userId.",
+			});
+		}
+
+		const integration = await Integration.findOne({ userId });
+		const organizations = await getUserOrganizations(integration.token);
+		return res.status(200).json({ success: true, data: organizations });
+	} catch (err) {
+		res.status(500).json({
+			success: false,
+			message: err.message || 'Failed to fetch user organizations'
+		});
+	}
+};
+
+export const getOrganizationAllRepos = async (req, res) => {
+	try {
+		const { userId, organizationName } = req.params;
+		if (!userId || !organizationName) {
+			return res.status(422).json({
+				success: false,
+				message: "Invalid/Missing userId or organizationName.",
+			});
+		}
+		const integration = await Integration.findOne({ userId });
+		const repos = await getOrganizationRepos(integration.token, organizationName);
+		return res.status(200).json({ success: true, data: repos });
+	} catch (err) {
+		res.status(500).json({
+			success: false,
+			message: err.message || `Failed to fetch repositories for organization: ${organizationName}`
+		});
+	}
+};
+
+export const getUserWiseRepoData = async (req, res) => {
+	try {
+		const { data, userId } = req.body;
+		if (!userId || data.length === 0) {
+			return res.status(422).json({
+				success: false,
+				message: "Invalid/Missing userId.",
+			});
+		}
+		await aggregateUserData(req, res, () => {
+			return res.status(200).json({ success: true, userWiseRepoData: req.userWiseRepoData });
+		});
+	} catch (err) {
+		res.status(500).json({
+			success: false,
+			message: 'Server error.',
+		});
+	}
+};
+
+export const getAllUserRepos = async (req, res) => {
+	try {
+		const { userId } = req.params;
+		if (!userId) {
+			return res.status(422).json({
+				success: false,
+				message: "Invalid/Missing userId.",
+			});
+		}
+		const integration = await Integration.findOne({ userId });
+		const repoData = await getAllRepos(integration.token);
+		return res.status(200).json({ success: true, data: repoData });
+	} catch (err) {
+		res.status(500).json({
+			success: false
+		});
+	}
+};
+
+export const aggregateUserData = async (req, res, next) => {
+	try {
+		const { data, userId } = req.body;
+		const userAggregates = {};
+		const integration = await Integration.findOne({ userId });
+		for (const { ownerName, repoName } of data) {
+			const userObj = { accessToken: integration.token, repoName, ownerName };
+
+			const commits = await getUserCommit(userObj);
+			const pullRequests = await getUserPullRequests(userObj);
+			const issues = await getUserIssueCounts(userObj);
+
+			const aggregateUserData = (arr, type) => {
+				arr.forEach(userData => {
+					const { name, id } = userData;
+					if (!userAggregates[name]) {
+						userAggregates[name] = { name, id, commit: 0, pullRequests: 0, issues: 0 };
+					}
+					userAggregates[name][type] += userData[type];
+				});
+			};
+			aggregateUserData(commits, 'commit');
+			aggregateUserData(pullRequests, 'pullRequests');
+			aggregateUserData(issues, 'issues');
+		}
+		const finalResult = Object.values(userAggregates);
+		req.userWiseRepoData = finalResult;
+		next();
+	} catch (error) {
+		console.error('Error aggregating user data:', error);
+		return res.status(500).json({ success: false, message: 'Failed to aggregate user data.' });
 	}
 };
