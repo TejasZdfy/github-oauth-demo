@@ -1,9 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GithubIntegrationComponent } from './components/github-integration/github-integration.component';
+import { FullLayoutComponent } from './full-layout/full-layout.component';
 
 const routes: Routes = [
-  { path: '', component: GithubIntegrationComponent },
+  {
+    path: '',
+    component: FullLayoutComponent,
+    loadChildren: () =>
+      import('../app/pages/pages.module').then((m) => m.PagesModule),
+  },
+ 
+
+
 ];
 
 @NgModule({

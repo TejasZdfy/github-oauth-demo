@@ -1,0 +1,18 @@
+<mat-sidenav-container>
+  <mat-sidenav opened mode="side" [style.width.px]="collapsed ? 70 : 250">
+    <button mat-icon-button [ngClass]="collapsed ? 'left-right-arrow-isactive' : 'left-right-arrow-isinactive'"
+      (click)="toggleSidebar()" class="left-right-arrow">
+      <mat-icon *ngIf="collapsed">arrow_forward_ios</mat-icon>
+      <mat-icon *ngIf="!collapsed">arrow_back_ios</mat-icon>
+    </button>
+    <app-sidebar [collapsed]="collapsed">
+    </app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content-container" [style.margin-left.px]="collapsed ? 70 : 250">
+    <div>
+      <app-github-integration></app-github-integration>
+    </div>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

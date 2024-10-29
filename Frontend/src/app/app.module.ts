@@ -1,38 +1,40 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GithubIntegrationComponent } from './components/github-integration/github-integration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { GitProjectsComponent } from './components/git-projects/git-projects.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { FullLayoutComponent } from './full-layout/full-layout.component';
+import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { GithubIntegrationComponent } from './pages/github-integration/github-integration.component';
+import { GitProjectsComponent } from './pages/git-projects/git-projects.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FullLayoutComponent,
+    SidebarComponent,
     GithubIntegrationComponent,
-    GitProjectsComponent
+    GitProjectsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatExpansionModule,
     AgGridModule,
     NgHttpLoaderModule.forRoot(),
+    AngularMaterialModule
 
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
